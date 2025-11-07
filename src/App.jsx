@@ -1,132 +1,136 @@
-// App.js
-import React, { useState, useEffect } from "react";
-import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
-import axios from "axios";
-import AddPersonPage from "./components/pages/AddPersonPage";
-import DashboardPage from "./components/pages/DashboardPage";
-import NavBar from "./components/pages/NavBar";
-import HomePage from "./components/pages/HomePage";
-import UserDetailsPage from "./components/pages/UserDetailsPage";
-import CustomerLoginPage from "./components/pages/CustomerLoginPage";
-import "bootstrap/dist/css/bootstrap.min.css";
+"use client"
+
+import { useState, useEffect } from "react"
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom"
+import axios from "axios"
+import NavBar from "./components/pages/NavBar"
+import Login from "./components/Login"
+import AdminDashboard from "./components/AdminDashboard"
+import UserDashboard from "./components/pages/UserDashboard"
+import AddPersonForm from "./components/AddPersonForm"
+import SignUp from "./components/SignUp"
+import "bootstrap/dist/css/bootstrap.min.css"
 
 function App() {
-  const [people, setPeople] = useState([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(() => localStorage.getItem("isLoggedIn") === "true");
-  const [isHost, setIsHost] = useState(() => localStorage.getItem("isHost") === "true");
-  const [loggedInCustomer, setLoggedInCustomer] = useState(() => {
-    const stored = localStorage.getItem("loggedInCustomer");
-    return stored ? JSON.parse(stored) : null;
-  });
-  const [searchText, setSearchText] = useState("");
-  const navigate = useNavigate();
+  const [people, setPeople] = useState([])
+  const [isLoggedIn, setIsLoggedIn] = useState(() => localStorage.getItem("isLoggedIn") === "true")
+  const [isAdmin, setIsAdmin] = useState(() => localStorage.getItem("isAdmin") === "true")
+  const [user, setUser] = useState(() => {
+    const stored = localStorage.getItem("user")
+    return stored ? JSON.parse(stored) : null
+  })
+  const navigate = useNavigate()
 
   const fetchCustomers = async () => {
     try {
-      const token = localStorage.getItem("token");
-      const res = await axios.get("https://myfinacebackend.onrender.com/api/customers", {
+      const token = localStorage.getItem("token")
+      const res = await axios.get("http://localhost:5000/api/customers", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      });
-      setPeople(res.data);
+      })
+      setPeople(res.data)
     } catch (err) {
-      console.error("Failed to fetch customers", err);
+      console.error("Failed to fetch customers", err)
     }
-  };
+  }
 
   useEffect(() => {
-    const storedIsHost = localStorage.getItem("isHost") === "true";
-    const storedIsLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-    setIsHost(storedIsHost);
-    setIsLoggedIn(storedIsLoggedIn);
+    const storedIsAdmin = localStorage.getItem("isAdmin") === "true"
+    const storedIsLoggedIn = localStorage.getItem("isLoggedIn") === "true"
+    const storedUser = localStorage.getItem("user")
 
-    if (storedIsLoggedIn && storedIsHost) {
-      fetchCustomers();
+    setIsAdmin(storedIsAdmin)
+    setIsLoggedIn(storedIsLoggedIn)
+    if (storedUser) {
+      setUser(JSON.parse(storedUser))
     }
-  }, []);
+
+    if (storedIsLoggedIn && storedIsAdmin) {
+      fetchCustomers()
+    }
+  }, [])
 
   const handleLoginToggle = () => {
-    setIsLoggedIn(false);
-    setIsHost(false);
-    setLoggedInCustomer(null);
-    localStorage.clear();
-    navigate("/");
-  };
+    setIsLoggedIn(false)
+    setIsAdmin(false)
+    setUser(null)
+    localStorage.clear()
+    navigate("/")
+  }
 
-  const handleCustomerLogin = (customer) => {
-    setIsLoggedIn(true);
-    setIsHost(customer.isHost);
-    setLoggedInCustomer(customer);
-    localStorage.setItem("isLoggedIn", "true");
-    localStorage.setItem("isHost", customer.isHost);
-    localStorage.setItem("loggedInCustomer", JSON.stringify(customer));
-    localStorage.setItem("token", customer.token);
-    if (customer.isHost) {
-      fetchCustomers();
-      navigate("/dashboard");
+  const handleCustomerLogin = (loggedInUser) => {
+    setIsLoggedIn(true)
+    setIsAdmin(loggedInUser.isAdmin || false)
+    setUser(loggedInUser)
+    localStorage.setItem("isLoggedIn", "true")
+    localStorage.setItem("isAdmin", loggedInUser.isAdmin || false)
+    localStorage.setItem("user", JSON.stringify(loggedInUser))
+    localStorage.setItem("token", loggedInUser.token)
+
+    if (loggedInUser.isAdmin) {
+      fetchCustomers()
+      navigate("/dashboard")
     } else {
-      navigate(`/user/${customer._id}`);
+      navigate("/my-account")
     }
-  };
+  }
 
   return (
     <>
-      <NavBar
-        isLoggedIn={isLoggedIn}
-        isHost={isHost}
-        toggleLogin={handleLoginToggle}
-        searchText={searchText}
-        setSearchText={setSearchText}
-      />
+      <NavBar isLoggedIn={isLoggedIn} isAdmin={isAdmin} toggleLogin={handleLoginToggle} />
       <div style={{ paddingTop: "70px" }}>
         <Routes>
-          <Route path="/" element={<HomePage />} />
           <Route
-            path="/login"
-            element={<CustomerLoginPage setLoggedInCustomer={handleCustomerLogin} />}
+            path="/"
+            element={
+              <div className="container mt-5 text-center">
+                <h1>Welcome to Finance Manager</h1>
+                <p>Manage your loans and payments efficiently</p>
+                {!isLoggedIn && (
+                  <div className="mt-4">
+                    <a href="/login" className="btn btn-primary btn-lg me-2">
+                      Login
+                    </a>
+                    <a href="/signup" className="btn btn-success btn-lg">
+                      Sign Up
+                    </a>
+                  </div>
+                )}
+              </div>
+            }
           />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/login" element={<Login setLoggedInCustomer={handleCustomerLogin} />} />
           <Route
             path="/add"
             element={
-              isLoggedIn && isHost ? <AddPersonPage /> : <Navigate to="/login" replace />
+              isLoggedIn && isAdmin ? (
+                <AddPersonForm onAddPerson={(newCustomer) => setPeople([...people, newCustomer])} />
+              ) : (
+                <Navigate to="/login" replace />
+              )
             }
           />
           <Route
             path="/dashboard"
             element={
-              isLoggedIn && isHost ? (
-                <DashboardPage
-                  people={people}
-                  setPeople={setPeople}
-                  isHost={isHost}
-                  searchText={searchText}
-                />
+              isLoggedIn && isAdmin ? (
+                <AdminDashboard people={people} setPeople={setPeople} />
               ) : (
                 <Navigate to="/login" replace />
               )
             }
           />
           <Route
-            path="/user/:id"
-            element={
-              isLoggedIn && !isHost && loggedInCustomer ? (
-                <UserDetailsPage
-                  people={[loggedInCustomer]}
-                  setPeople={setPeople}
-                  isHost={false}
-                  loggedInCustomer={loggedInCustomer}
-                />
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            }
+            path="/my-account"
+            element={isLoggedIn && !isAdmin && user ? <UserDashboard user={user} /> : <Navigate to="/login" replace />}
           />
           <Route path="*" element={<div className="text-center mt-5">404 - Page not found</div>} />
         </Routes>
       </div>
     </>
-  );
+  )
 }
 
-export default App;
+export default App

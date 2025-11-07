@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Button, Card, Table, Form, Modal } from "react-bootstrap";
+import { Button, Card, Table, Form, Modal, Spinner } from "react-bootstrap";
 import moment from "moment";
 
 const formatCurrency = (amount) =>
@@ -19,6 +19,7 @@ const UserDetailsPage = ({ people, setPeople, isHost }) => {
   const [showLateFeeModal, setShowLateFeeModal] = useState(false);
   const [paymentAmount, setPaymentAmount] = useState("");
   const [feeAmount, setFeeAmount] = useState("");
+  const [loading, setLoading] = useState(false); // Add loading state
 
   if (!user) {
     return <div className="text-center mt-5 text-danger">User not found</div>;
@@ -30,6 +31,13 @@ const UserDetailsPage = ({ people, setPeople, isHost }) => {
   };
 
   const handleAddPayment = async () => {
+    if (!paymentAmount || parseFloat(paymentAmount) <= 0) {
+      alert("Please enter a valid amount.");
+      return;
+    }
+
+    setLoading(true); // Set loading to true
+
     try {
       const res = await fetch(`/api/customers/${id}/add-payment`, {
         method: "POST",
@@ -39,6 +47,8 @@ const UserDetailsPage = ({ people, setPeople, isHost }) => {
         body: JSON.stringify({ amount: parseFloat(paymentAmount) }),
       });
 
+      if (!res.ok) throw new Error("Failed to add payment");
+
       const updatedUser = await res.json();
       updateUserInState(updatedUser);
       alert("Payment added successfully.");
@@ -47,10 +57,19 @@ const UserDetailsPage = ({ people, setPeople, isHost }) => {
     } catch (err) {
       console.error("Failed to add payment:", err);
       alert("Failed to add payment.");
+    } finally {
+      setLoading(false); // Reset loading state
     }
   };
 
   const handleAddLateFee = async () => {
+    if (!feeAmount || parseFloat(feeAmount) <= 0) {
+      alert("Please enter a valid fee amount.");
+      return;
+    }
+
+    setLoading(true); // Set loading to true
+
     try {
       const res = await fetch(`/api/customers/${id}/add-late-fee`, {
         method: "POST",
@@ -63,6 +82,8 @@ const UserDetailsPage = ({ people, setPeople, isHost }) => {
         }),
       });
 
+      if (!res.ok) throw new Error("Failed to add late fee");
+
       const updatedUser = await res.json();
       updateUserInState(updatedUser);
       alert("Late fee added successfully.");
@@ -71,6 +92,8 @@ const UserDetailsPage = ({ people, setPeople, isHost }) => {
     } catch (err) {
       console.error("Failed to add late fee:", err);
       alert("Failed to add late fee.");
+    } finally {
+      setLoading(false); // Reset loading state
     }
   };
 
@@ -209,9 +232,9 @@ const UserDetailsPage = ({ people, setPeople, isHost }) => {
           <Button
             variant="primary"
             onClick={handleAddPayment}
-            disabled={!isValidPayment}
+            disabled={!isValidPayment || loading}
           >
-            Add
+            {loading ? <Spinner animation="border" size="sm" /> : "Add"}
           </Button>
         </Modal.Footer>
       </Modal>
@@ -253,9 +276,9 @@ const UserDetailsPage = ({ people, setPeople, isHost }) => {
           <Button
             variant="warning"
             onClick={handleAddLateFee}
-            disabled={!isValidFee}
+            disabled={!isValidFee || loading}
           >
-            Add Fee
+            {loading ? <Spinner animation="border" size="sm" /> : "Add Fee"}
           </Button>
         </Modal.Footer>
       </Modal>

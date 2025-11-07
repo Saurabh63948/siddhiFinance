@@ -1,0 +1,127 @@
+.admin-dashboard {
+  padding: 30px 20px;
+  background-color: #f5f5f5;
+  min-height: calc(100vh - 70px);
+}
+
+.dashboard-title {
+  text-align: center;
+  color: #333;
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+
+.table-responsive {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.table {
+  margin-bottom: 0;
+}
+
+.table thead {
+  background-color: #343a40;
+}
+
+.table th {
+  color: white;
+  font-weight: 600;
+  padding: 15px;
+  border: none;
+}
+
+.table td {
+  padding: 12px 15px;
+  vertical-align: middle;
+}
+
+.table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.btn-sm {
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
+.btn-warning {
+  background-color: #ffc107;
+  border: none;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border: none;
+}
+
+.form-control-sm {
+  padding: 5px 8px;
+  font-size: 12px;
+}
+
+.alert {
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+/* --- Modern Offcanvas Style --- */
+.custom-offcanvas {
+  position: fixed;
+  top: 0;
+  right: -500px;
+  width: 400px;
+  height: 100vh;
+  background: #f8f9fa;
+  box-shadow: -2px 0 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.4s ease-in-out;
+  z-index: 1050;
+  overflow-y: auto;
+  border-left: 1px solid #ddd;
+}
+
+.custom-offcanvas.show {
+  right: 0;
+}
+
+.offcanvas-header {
+  background: linear-gradient(135deg, #007bff, #6610f2);
+  color: white;
+  padding: 1rem;
+}
+
+.offcanvas-title {
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+/* --- Glass Card Style --- */
+.glass-card {
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 1rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Gradient progress bar */
+.progress-bar.bg-gradient {
+  background: linear-gradient(90deg, #28a745, #20c997);
+}
+
+/* Scrollbar */
+.custom-offcanvas::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-offcanvas::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
