@@ -22,7 +22,7 @@ const UserDashboard = ({ user }) => {
     setError("")
 
     try {
-      const response = await axios.get(`https://https://myfinacebackend.onrender.com/api/customers/by-mobile/${user.mobileNumber}`, {
+      const response = await axios.get(`https://mfinancebackend.onrender.com/api/customers/by-mobile/${user.mobileNumber}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
 
@@ -41,7 +41,7 @@ const UserDashboard = ({ user }) => {
 
     try {
       const response = await axios.post(
-        `https://https://myfinacebackend.onrender.com/api/customers/${customerData._id}/add-payment`,
+        `https://mfinancebackend.onrender.com/api/customers/${customerData._id}/add-payment`,
         {
           amount: Number(paymentAmount),
           date: new Date().toISOString().split("T")[0],

@@ -27,7 +27,7 @@ const Login = ({ setLoggedInCustomer }) => {
 
     setLoading(true)
     try {
-      const response = await axios.post("https://https://myfinacebackend.onrender.com/api/auth/send-otp", {
+      const response = await axios.post("https://mfinancebackend.onrender.com/api/auth/send-otp", {
         mobileNumber,
       })
 
@@ -57,7 +57,7 @@ const Login = ({ setLoggedInCustomer }) => {
 
     setLoading(true)
     try {
-      const response = await axios.post("https://https://myfinacebackend.onrender.com/api/auth/verify-otp", {
+      const response = await axios.post("https://mfinancebackend.onrender.com/api/auth/verify-otp", {
         mobileNumber,
         otp,
         isAdmin: false,

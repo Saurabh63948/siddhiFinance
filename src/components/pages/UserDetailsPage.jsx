@@ -39,7 +39,7 @@ const UserDetailsPage = ({ people, setPeople, isHost }) => {
     setLoading(true); // Set loading to true
 
     try {
-      const res = await fetch(`https://https://myfinacebackend.onrender.com/api/customers/${id}/add-payment`, {
+      const res = await fetch(`https://mfinancebackend.onrender.com/api/customers/${id}/add-payment`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -71,7 +71,7 @@ const UserDetailsPage = ({ people, setPeople, isHost }) => {
     setLoading(true); // Set loading to true
 
     try {
-      const res = await fetch(`https://https://myfinacebackend.onrender.com/api/customers/${id}/add-late-fee`, {
+      const res = await fetch(`https://mfinancebackend.onrender.com/api/customers/${id}/add-late-fee`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

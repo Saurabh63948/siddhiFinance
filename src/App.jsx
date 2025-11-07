@@ -24,7 +24,7 @@ function App() {
   const fetchCustomers = async () => {
     try {
       const token = localStorage.getItem("token")
-      const res = await axios.get("https://https://myfinacebackend.onrender.com/api/customers", {
+      const res = await axios.get("https://mfinancebackend.onrender.com/api/customers", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
