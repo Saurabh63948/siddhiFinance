@@ -32,7 +32,7 @@ const AdminDashboard = ({ people, setPeople }) => {
     setError("");
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/customers/${editingId}`,
+        `https://myfinacebackend-2.onrender.com/api/customers/${editingId}`,
         editData,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -55,7 +55,7 @@ const AdminDashboard = ({ people, setPeople }) => {
     setError("");
 
     try {
-      await axios.delete(`http://localhost:5000/api/customers/${id}`, {
+      await axios.delete(`https://myfinacebackend-2.onrender.com/api/customers/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -91,7 +91,7 @@ const AdminDashboard = ({ people, setPeople }) => {
 
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/customers/${selectedUser._id}/add-payment`,
+        `https://myfinacebackend-2.onrender.com/api/customers/${selectedUser._id}/add-payment`,
         {
           amount: Number(paymentAmount),
           date: new Date().toISOString().split("T")[0],
@@ -124,7 +124,7 @@ const AdminDashboard = ({ people, setPeople }) => {
 
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/customers/${selectedUser._id}/add-fine`,
+        `https://myfinacebackend-2.onrender.com/api/customers/${selectedUser._id}/add-fine`,
         {
           amount: Number(fineAmount),
           reason: fineReason,

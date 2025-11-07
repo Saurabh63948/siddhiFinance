@@ -1,118 +1,6 @@
-// import React, { useState, useEffect } from 'react';
-// import { useNavigate } from 'react-router-dom';
-// import axios from 'axios';
-
-// const Login = () => {
-//   const [email, setEmail] = useState('');
-//   const [password, setPassword] = useState('');
-//   const [error, setError] = useState('');
-//   const [loading, setLoading] = useState(false);  // To handle loading state
-//   const navigate = useNavigate();
-
-//   useEffect(() => {
-//     const token = localStorage.getItem("token");
-//     if (token) {
-//       navigate("/profile"); // Redirect to profile if already logged in
-//     }
-//   }, [navigate]);
-
-//   const validateForm = () => {
-//     if (!email || !password) {
-//       setError("Please fill in both fields.");
-//       return false;
-//     }
-
-//     const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
-//     if (!emailRegex.test(email)) {
-//       setError("Please enter a valid email address.");
-//       return false;
-//     }
-//     return true;
-//   };
-
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-
-//     if (!validateForm()) return;
-
-//     setLoading(true);
-//     axios
-//       .post("http://localhost:5000/api/auth/login", { email, password })
-//       .then((response) => {
-//         setLoading(false);
-//         if (response.data.success) {
-//           // Save the JWT token to localStorage
-//           localStorage.setItem("token", response.data.token);
-//           navigate("/profile");  // Redirect to the profile page
-//         } else {
-//           setError(response.data.message);  // Display error message from the response
-//         }
-//       })
-//       .catch((err) => {
-//         setLoading(false);
-//         console.error("Login error:", err);
-//         if (err.response) {
-//           setError(err.response.data.message || "An error occurred during login");
-//         } else {
-//           setError("Network error or timeout");
-//         }
-//       });
-
-//     // Reset form fields
-//     setEmail('');
-//     setPassword('');
-//   };
-
-//   return (
-//     <div className="login-container">
-//       <div className="login-form">
-//         <h2>Login</h2>
-//         <form onSubmit={handleSubmit}>
-//           <div className="mb-3">
-//             <label htmlFor="email" className="form-label">Email address</label>
-//             <input
-//               type="email"
-//               className="form-control"
-//               id="email"
-//               required
-//               value={email}
-//               onChange={(e) => setEmail(e.target.value)}
-//               aria-describedby="emailHelp"
-//             />
-//             <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
-//           </div>
-//           <div className="mb-3">
-//             <label htmlFor="password" className="form-label">Password</label>
-//             <input
-//               type="password"
-//               className="form-control"
-//               id="password"
-//               required
-//               value={password}
-//               onChange={(e) => setPassword(e.target.value)}
-//             />
-//           </div>
-
-//           <button type="submit" className="btn btn-primary" disabled={loading}>
-//             {loading ? "Logging in..." : "Login"}
-//           </button>
-
-//           {error && <div className="alert alert-danger mt-2">{error}</div>}  {/* Display error message */}
-
-//           <div className="form-text mt-3">Don't have an account?</div>
-//         </form>
-
-//         <a href="/signup" className="btn btn-link" aria-label="Go to sign-up page">Sign Up</a>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Login;
 
 
 
-"use client"
 
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
@@ -139,7 +27,7 @@ const Login = ({ setLoggedInCustomer }) => {
 
     setLoading(true)
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/send-otp", {
+      const response = await axios.post("https://myfinacebackend-2.onrender.com/api/auth/send-otp", {
         mobileNumber,
       })
 
@@ -169,7 +57,7 @@ const Login = ({ setLoggedInCustomer }) => {
 
     setLoading(true)
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/verify-otp", {
+      const response = await axios.post("https://myfinacebackend-2.onrender.com/api/auth/verify-otp", {
         mobileNumber,
         otp,
         isAdmin: false,

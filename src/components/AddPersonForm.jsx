@@ -244,7 +244,6 @@
 
 
 
-"use client"
 
 import { useState, useRef } from "react"
 import axios from "axios"
@@ -335,7 +334,7 @@ const AddPersonForm = ({ onAddPerson }) => {
     setLoading(true)
     try {
       const token = localStorage.getItem("token")
-      const res = await axios.post("http://localhost:5000/api/customers", newPerson, {
+      const res = await axios.post("https://myfinacebackend-2.onrender.com/api/customers", newPerson, {
         headers: { Authorization: `Bearer ${token}` },
       })
 
