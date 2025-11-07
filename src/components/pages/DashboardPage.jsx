@@ -55,7 +55,7 @@ const DashboardPage = ({ people: externalPeople, setPeople: externalSetPeople, i
       const token = localStorage.getItem("token");
 
       const res = await axios.post(
-        `https://myfinacebackend-2.onrender.com/api/customers/${currentUserId}/add-payment`,
+        `https://https://myfinacebackend.onrender.com/api/customers/${currentUserId}/add-payment`,
         {
           date: today,
           amount: parsedAmount,
@@ -95,7 +95,7 @@ const DashboardPage = ({ people: externalPeople, setPeople: externalSetPeople, i
       const token = localStorage.getItem("token");
 
       const res = await axios.post(
-        `https://myfinacebackend-2.onrender.com/api/customers/${currentUserId}/add-late-fee`,
+        `https://https://myfinacebackend.onrender.com/api/customers/${currentUserId}/add-late-fee`,
         {
           date: today,
           amount: Number(amount),
@@ -129,7 +129,7 @@ const DashboardPage = ({ people: externalPeople, setPeople: externalSetPeople, i
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("https://myfinacebackend-2.onrender.com/api/customers", {
+        const res = await axios.get("https://https://myfinacebackend.onrender.com/api/customers", {
           headers: {
             Authorization: token ? `Bearer ${token}` : undefined,
           },
